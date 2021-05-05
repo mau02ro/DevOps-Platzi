@@ -91,3 +91,88 @@ EL comando **top** nos permite interactuar con una interfaz gráfica que nos mue
 Para ver la información de la CPU podemos usar el comando **cat /proc/cpuinfo | grep "processor"**. Recuerda que linux hace diferencia entre minúsculas y mayúsculas, pero puedes usar el comando **grep -i** para filtrar sin estas diferencias.
 
 Para ver la información de la memoria podemos usar el comando free o para que la información sea más facil de leer, **free -sh**. Y para ver el uso del disco está el comando **du** o **du -hsc**.
+
+## Analisis de los parametros de red
+
+Una IP es un identificador único para los equipos que estan conectados a una red.
+
+Las IPs Públicas son las que se  asignan a cualquier dispositivo conectado a Internet. Por ejemplo los servidores que alojan tus sitios web, el router que te da acceso a internet, entre otros.
+
+Si tu dispositivo tiene una Ip pública significca que puede conectarse a otro que también tenga una. Por esto mismo no puede haber dos dipositivos con la misma IP.
+
+Para encontrar la dirección IP de nuetsro dispositivo podemos usar los comandos **ifconfig** en linkux y mac o **ipconfig** en windows. ambién podemos usar el comando **ip a**.
+
+Para ver el nombre/identificador de nuestro equipo en todas las redes podemos usar el comando hostname. También podemos ver qué dispositivo nos permite acceso a internet co el comando **route -n**.
+
+Para identificar las IPs de diferentes dominos podemos usar el comando **nslookup nombredeldominio.ext**. También podemos usar el comando **curl** o **wget** para realizar consultas a algún servidor.
+
+## Administración de paquetes acorde a la distribución
+
+Cada distibución de linux maneja su software de maneras diferentes.
+
+### Red Hat /Centos /Fedora
+
+Se gestor de paquetes es **.rpm** (REd hat package Manager). La base de datos de este gestor está localizada en **/var/lib/rpm**.
+
+El comando **rpm -qa** nos permite listar todos los rpms instalados en la máquina. Con **rpm -i nombre-del-paquete.rpm** instalamos los paquetes y con **rpm -e nombre-del-paquete.rpm** lso removemos del sistema.
+
+Los paquetes se pueden instalar desde un repositorio sin tener que conocer la ruta del archivo o las dependencias con el comando **yum install nombre-del-paquete**.
+
+También podemos buscar pawuetes más específicos con el comando **yum search posible-nombre-del-paquete**.
+
+### Debian /Ubuntu
+
+Su administrador de paquetes es **.deb**. Podemos relizar las instalaciones con **dpkg -i nombre-del-paquete.deb** o repositorios **apt**.
+
+Su base de datos está localizada en **/var/lib/dpkg**. Con el comando **dpkg -l** listamos todos los debs instalados en la máquina. Instalamos los paquetes con **dpkg -i nombre-del-paquete** y los removemos del sistema con **dpkg -r nombre-del-paquete**.
+
+Si ya tenemos software configurado podemos usar el comando **dpkg-reconfigure nombre-del-paquete** para volver a jecutar el asistente de la configuración (si está disponible).
+
+También podemos realizar las instalaciones con el comando **apt install nombre-del-paquete** y busquedas de paquetes con **apt searchposible-nombre-del-paquete**.
+
+## Nagios: Desempaquetando, descompresión, compilación e instalación de paquetes
+
+No to el software que nesecitamos se encuentra en lso repositorios. Debido a esto, algunas veces debemos descargar el software, relizar un proceso de descompresión y desempaquetado para finalmente instalar la herramienta.
+
+Inatlación de algunas herramientas para manejar una base de datos MySQL:
+
+```
+sudo apt install build-essential libgd-dev openssl libssl-dev unzip apache2 php gcc libdbi-perl libdbd-mysql-perl
+```
+
+Inatlacion de Nagios:
+
+```
+wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.4.tar.gz -0 nagioscore.tar.gz
+```
+
+Descomprimir y desempaquetar archivos con tar:
+
+```
+tar xvzf nagioscore.tar.gz
+```
+
+Este comando creará una carpeta nagios-4.4.4. El nombre de la carpeta puede variar dependiendo de la version. Entrando a esta carpeta podemos ejecutar diferentes archivos y comandos para configurar el software y relizar la instalación.
+
+```
+#1
+sudo ./configure --with-https-conf=/etc/apache2/sites-enabled
+
+#2
+sudo make all
+
+#3
+sudo make install
+
+#4
+sudo make install-init
+
+#5
+sudo make install-commandmode
+
+#6
+sudo make install-config
+
+#7
+sudo make install-webconf
+```
